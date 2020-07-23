@@ -25,7 +25,7 @@ public class DibujoMatriz implements Observer {
         this.gridLayoutMatriz = new GridLayout(this.mainActivity);
         this.gridLayoutMatriz.setColumnCount(10);
         this.gridLayoutMatriz.setRowCount(20);
-        this.gridLayoutMatriz.setPadding(20,10,20,10);
+        this.gridLayoutMatriz.setPadding(80,40,30,40);
         this.linearLayoutSnake = this.mainActivity.findViewById(R.id.linearLayoutSnake);
         Display display = this.mainActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -35,8 +35,9 @@ public class DibujoMatriz implements Observer {
         for(int i=0; i< 20 ; i++){
             for(int j=0; j< 10; j++){
                 this.textViewMatriz[i][j] = new TextView(this.mainActivity);
-                this.textViewMatriz[i][j].setWidth((int)(width*1/10)); this.textViewMatriz[i][j].setHeight((int)(heigth*0.9/20));
-                this.textViewMatriz[i][j].setBackgroundColor(Color.GREEN);
+                this.textViewMatriz[i][j].setWidth((int)(width*0.7/10));
+                this.textViewMatriz[i][j].setHeight((int)(heigth*0.7/20));
+                this.textViewMatriz[i][j].setBackgroundColor(Color.BLACK);
                 this.gridLayoutMatriz.addView(this.textViewMatriz[i][j]);
             }
         }
@@ -46,12 +47,16 @@ public class DibujoMatriz implements Observer {
     public void update(Observable o, Object arg) {
         ArrayList<Object> elemento = (ArrayList<Object>) arg;
         ArrayList<Point> cuerpo = (ArrayList<Point>) elemento.get(0);
+        if(elemento.size()>1){
+            int[] puntoF = (int[]) elemento.get(1);
+            this.textViewMatriz[puntoF[0]][puntoF[1]].setBackgroundColor(Color.BLACK);
+        }
         for( int i = 0 ; i < cuerpo.size() ; i++ ){
             Point p = cuerpo.get(i);
             if(i==0){
                 this.textViewMatriz[p.x][p.y].setBackgroundColor(Color.YELLOW);
             }else{
-                this.textViewMatriz[p.x][p.y].setBackgroundColor(Color.BLACK);
+                this.textViewMatriz[p.x][p.y].setBackgroundColor(Color.GREEN);
             }
 
         }

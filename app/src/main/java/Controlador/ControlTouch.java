@@ -46,7 +46,7 @@ public class ControlTouch {
             }
         }else{
             if(difY > 0){
-                movimiento = Constantes.PISO;
+                movimiento = Constantes.ABAJO;
             }else{
                 movimiento = Constantes.ARRIBA;
             }

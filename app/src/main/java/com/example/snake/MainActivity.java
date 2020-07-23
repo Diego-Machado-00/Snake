@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import Controlador.ControlTouch;
 import Logica.Snake;
+import Util.Constantes;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
         this.snake.iniciarJuego();
 
     }
-
     public void moverSnake(String movimiento) {
-        this.snake.mover(movimiento);
+        Constantes.MOVIMIENTO = movimiento;
     }
 }
