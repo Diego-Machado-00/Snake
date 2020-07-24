@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Controlador.ControlTouch;
+import Logica.Game;
 import Logica.Snake;
 import Util.Constantes;
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private DibujoMatriz dibujoMatriz;
     private ControlTouch controlTouch;
     private Puntuacion puntuacion;
-    private Snake snake;
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,14 @@ public class MainActivity extends AppCompatActivity {
         this.dibujoMatriz = new DibujoMatriz(this);
         this.puntuacion = new Puntuacion(this);
         this.controlTouch = new ControlTouch(this);
-        this.snake = new Snake();
-        this.snake.addObserver(this.dibujoMatriz);
-        this.snake.iniciarJuego();
+        this.game = new Game();
+        this.game.addObserver(this.dibujoMatriz);
+        this.game.iniciarJuego();
 
     }
+
     public void moverSnake(String movimiento) {
         Constantes.MOVIMIENTO = movimiento;
+        this.game.moverSnake(movimiento);
     }
 }

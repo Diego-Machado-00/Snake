@@ -25,7 +25,7 @@ public class DibujoMatriz implements Observer {
         this.gridLayoutMatriz = new GridLayout(this.mainActivity);
         this.gridLayoutMatriz.setColumnCount(10);
         this.gridLayoutMatriz.setRowCount(20);
-        this.gridLayoutMatriz.setPadding(80,40,30,40);
+        this.gridLayoutMatriz.setPadding(80,20,30,40);
         this.linearLayoutSnake = this.mainActivity.findViewById(R.id.linearLayoutSnake);
         Display display = this.mainActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -47,10 +47,12 @@ public class DibujoMatriz implements Observer {
     public void update(Observable o, Object arg) {
         ArrayList<Object> elemento = (ArrayList<Object>) arg;
         ArrayList<Point> cuerpo = (ArrayList<Point>) elemento.get(0);
-        if(elemento.size()>1){
-            int[] puntoF = (int[]) elemento.get(1);
+        Point comida = (Point) elemento.get(1);
+        if(elemento.size()>2){
+            int[] puntoF = (int[]) elemento.get(2);
             this.textViewMatriz[puntoF[0]][puntoF[1]].setBackgroundColor(Color.BLACK);
         }
+        this.textViewMatriz[comida.x][comida.y].setBackgroundColor(Color.RED);
         for( int i = 0 ; i < cuerpo.size() ; i++ ){
             Point p = cuerpo.get(i);
             if(i==0){
