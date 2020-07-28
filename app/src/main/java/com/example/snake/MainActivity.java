@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         this.empezarJuego();
+
     }
 
     public void empezarJuego(){
@@ -44,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
         this.game.iniciarJuego();
     }
 
-   public void gameOver(){
+   public void gameOver(int puntaje){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Perdiste");
-        builder.setMessage("Perdiste!!");
+        builder.setTitle("Perdiste!!");
+        builder.setMessage("Tu puntaje es: "+puntaje);
         builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

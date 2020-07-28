@@ -20,6 +20,7 @@ public class Game  extends Observable {
     private Tiempo tiempoJuego;
     private int tiempo;
     private Timer timer;
+    private Timer timerT;
 
 
     public void iniciarJuego(){
@@ -48,8 +49,8 @@ public class Game  extends Observable {
             }
         };
 
-        Timer timerT = new Timer();
-        timerT.schedule(timerJ, 0 , 1000);
+        this.timerT =  new Timer();
+        this.timerT.schedule(timerJ, 0, 1000);
 
         final TimerTask timerTask = new TimerTask() {
             @Override
@@ -57,7 +58,7 @@ public class Game  extends Observable {
                     if(Constantes.MOVIMIENTO!=""){
                        if(!moverSnake(Constantes.MOVIMIENTO)){
                            this.cancel();
-                           timerJ.cancel();
+                           timerT.cancel();
                        }
                     }
             }
@@ -107,7 +108,9 @@ public class Game  extends Observable {
             this.colisionComida();
             if(this.muerteSnake()){
                 this.timer.cancel();
+                this.timerT.cancel();
                 elemento.add(true);
+                elemento.add(this.puntaje);
                 this.setChanged();
                 this.notifyObservers(elemento);
                 return false;
@@ -122,7 +125,9 @@ public class Game  extends Observable {
             }
         }else{
             this.timer.cancel();
+            this.timerT.cancel();
             elemento.add(true);
+            elemento.add(this.puntaje);
             this.setChanged();
             this.notifyObservers(elemento);
             return false;

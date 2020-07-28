@@ -37,7 +37,7 @@ public class DibujoMatriz implements Observer {
         this.gridLayoutMatriz = new GridLayout(this.mainActivity);
         this.gridLayoutMatriz.setColumnCount(10);
         this.gridLayoutMatriz.setRowCount(20);
-        this.gridLayoutMatriz.setPadding(80,20,30,20);
+        this.gridLayoutMatriz.setPadding(110,20,10,20);
         Display display = this.mainActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -46,8 +46,8 @@ public class DibujoMatriz implements Observer {
         for(int i=0; i< 20 ; i++){
             for(int j=0; j< 10; j++){
                 this.textViewMatriz[i][j] = new TextView(this.mainActivity);
-                this.textViewMatriz[i][j].setWidth((int)(width*0.7/10));
-                this.textViewMatriz[i][j].setHeight((int)(heigth*0.7/20));
+                this.textViewMatriz[i][j].setWidth((int)(width*0.8/10));
+                this.textViewMatriz[i][j].setHeight((int)(heigth*0.8/20));
                 this.textViewMatriz[i][j].setBackgroundColor(Color.BLACK);
                 this.gridLayoutMatriz.addView(this.textViewMatriz[i][j]);
             }
@@ -76,7 +76,6 @@ public class DibujoMatriz implements Observer {
                         Point p = cuerpo.get(i);
                         if (i == 0) {
                             this.textViewMatriz[p.x][p.y].setBackgroundColor(Color.YELLOW);
-                            this.textViewMatriz[p.x][p.y].setText("  |!  |!  ");
                         } else {
                             this.textViewMatriz[p.x][p.y].setBackgroundColor(Color.GREEN);;
                             this.textViewMatriz[p.x][p.y].setText("");
@@ -84,10 +83,11 @@ public class DibujoMatriz implements Observer {
                     }
                 }
             }else{
+                final int puntaje = (int) elemento.get(1);
                 this.mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mainActivity.gameOver();
+                        mainActivity.gameOver(puntaje);
                     }
                 });
             }
