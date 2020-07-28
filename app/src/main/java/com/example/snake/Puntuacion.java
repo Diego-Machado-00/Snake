@@ -1,16 +1,24 @@
 package com.example.snake;
 
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Puntuacion {
-    private TextView puntuacion;
+
     private MainActivity mainActivity;
+    private static TextView score;
+    private static TextView tiempo;
+
+    public static TextView getScore() {
+        return score;
+    }
+
+    public static TextView getTieJue() {
+        return tiempo;
+    }
 
     public Puntuacion(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        this.puntuacion = this.mainActivity.findViewById(R.id.textViewPuntuacion);
+        this.score = this.mainActivity.findViewById(R.id.textViewpuntuacion);
+        this.tiempo = this.mainActivity.findViewById(R.id.textViewTiempo);
     }
-
 }

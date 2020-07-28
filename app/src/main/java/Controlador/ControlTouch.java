@@ -37,22 +37,29 @@ public class ControlTouch {
     private void movimiento(float x1, float x2, float y1, float y2) {
         float difX = x2-x1;
         float difY = y2-y1;
-        String movimiento;
         if(Math.abs(difX) > Math.abs(difY)){
             if(difX > 0){
-                movimiento = Constantes.DERECHA;
+                if(Constantes.MOVIMIENTO != Constantes.IZQUIERDA){
+                    Constantes.MOVIMIENTO = Constantes.DERECHA;
+                }
             }else{
-                movimiento = Constantes.IZQUIERDA;
+                if(Constantes.MOVIMIENTO != Constantes.DERECHA){
+                    Constantes.MOVIMIENTO = Constantes.IZQUIERDA;
+                }
             }
         }else{
             if(difY > 0){
-                movimiento = Constantes.ABAJO;
-            }else{
-                movimiento = Constantes.ARRIBA;
+                if(Constantes.MOVIMIENTO != Constantes.ARRIBA){
+                    Constantes.MOVIMIENTO = Constantes.ABAJO;
+                }
+            }else {
+                if (Constantes.MOVIMIENTO != Constantes.ABAJO) {
+                    Constantes.MOVIMIENTO = Constantes.ARRIBA;
+                }
             }
         }
-        Toast.makeText(this.mainActivity.getApplicationContext(), movimiento, Toast.LENGTH_SHORT).show();
-        this.mainActivity.moverSnake(movimiento);
+        //Toast.makeText(this.mainActivity.getApplicationContext(), Constantes.MOVIMIENTO, Toast.LENGTH_SHORT).show();
+       // this.mainActivity.moverSnake(Constantes.MOVIMIENTO);
     }
 
 }

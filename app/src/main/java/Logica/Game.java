@@ -17,29 +17,56 @@ public class Game  extends Observable {
     private Comida comida;
     private int direccionX;
     private int direccionY;
+    private Tiempo tiempoJuego;
+    private int tiempo;
+    private Timer timer;
+
 
     public void iniciarJuego(){
+        if(this.timer != null){
+            this.timer.cancel();
+        }
         this.snake = new Snake();
         this.comida = new Comida(this.snake);
+        this.tiempoJuego = new Tiempo();
         this.puntaje = 0;
+        this.tiempo = 1000;
+
         ArrayList<Object> elemento = new ArrayList<Object>();
+        elemento.add(false);
         elemento.add(this.snake.getCuerpo());
         elemento.add(this.comida.getComida());
         this.setChanged();
         this.notifyObservers(elemento);
-        TimerTask timerTask = new TimerTask() {
+
+        final TimerTask timerJ = new TimerTask() {
             @Override
             public void run() {
                 if(Constantes.MOVIMIENTO!=""){
-                    moverSnake(Constantes.MOVIMIENTO);
+                    tiempoJuego();
                 }
             }
         };
-        Timer timer = new Timer();
-        timer.schedule(timerTask,0,1000);
+
+        Timer timerT = new Timer();
+        timerT.schedule(timerJ, 0 , 1000);
+
+        final TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                    if(Constantes.MOVIMIENTO!=""){
+                       if(!moverSnake(Constantes.MOVIMIENTO)){
+                           this.cancel();
+                           timerJ.cancel();
+                       }
+                    }
+            }
+        };
+        this.timer = new Timer();
+        this.timer.schedule(timerTask,0,this.tiempo);
     }
 
-    public void moverSnake(String movimiento){
+    public boolean moverSnake(String movimiento){
         int [] puntoF = new int[2];
         puntoF[0] = this.snake.obtenerCola().x;
         puntoF[1] = this.snake.obtenerCola().y;
@@ -74,36 +101,61 @@ public class Game  extends Observable {
                 esLimite = true;
             }
         }
+        ArrayList<Object> elemento = new ArrayList<Object>();
         if(!esLimite){
             this.snake.mover(this.direccionX,this.direccionY);
             this.colisionComida();
-            boolean isMuerte = this.muerteSnake();
-            if(!isMuerte){
-                ArrayList<Object> elemento = new ArrayList<Object>();
+            if(this.muerteSnake()){
+                this.timer.cancel();
+                elemento.add(true);
+                this.setChanged();
+                this.notifyObservers(elemento);
+                return false;
+            }else{
+                elemento.add(false);
                 elemento.add(this.snake.getCuerpo());
                 elemento.add(this.comida.getComida());
                 elemento.add(puntoF);
+                elemento.add(this.puntaje);
                 this.setChanged();
                 this.notifyObservers(elemento);
-            }else{
-                this.gameOver();
             }
         }else{
-            this.gameOver();
+            this.timer.cancel();
+            elemento.add(true);
+            this.setChanged();
+            this.notifyObservers(elemento);
+            return false;
         }
+        return true;
 
     }
-
+    
     private void colisionComida() {
         if(this.snake.obtenerCabeza().equals(this.comida.getComida())){
             this.snake.crecerSnake();
             this.comida.nuevaComida(this.snake);
             this.puntaje += 1;
+            this.timer.cancel();
+            this.timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if(Constantes.MOVIMIENTO!=""){
+                        if(!moverSnake(Constantes.MOVIMIENTO)){
+                            this.cancel();
+                        }
+                    }
+                }
+            };
+            this.tiempo -= (this.puntaje > 15 ? 7 : 50);
+            this.timer.schedule(timerTask,this.tiempo,this.tiempo);
         }
+
     }
 
     private boolean muerteSnake(){
-        for(int i = 1 ; i < this.snake.largoSnake() ; i++){
+        for(int i = 1 ; i < this.snake.largoSnake()+1 ; i++){
             if(this.snake.getCuerpo().get(0).equals(this.snake.getCuerpo().get(i))){
                 return true;
             }
@@ -111,8 +163,15 @@ public class Game  extends Observable {
         return false;
     }
 
-    private void gameOver(){
-
+    private void tiempoJuego(){
+        this.tiempoJuego.tiempoJuego();
+        ArrayList<Object> elemento = new ArrayList<Object>();
+        elemento.add(null);
+        elemento.add(this.tiempoJuego.getSeg());
+        elemento.add(this.tiempoJuego.getMin());
+        elemento.add(this.tiempoJuego.getHor());
+        this.setChanged();
+        this.notifyObservers(elemento);
     }
 
 }
